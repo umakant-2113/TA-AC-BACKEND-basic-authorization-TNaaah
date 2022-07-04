@@ -1,67 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="/stylesheets/style.css" />
-  </head>
+<%include partails/header%>
   <body>
-    <div class="home-div">
-        <div>
-            <a href="/users/login">Login</a>
-            <a href="/users/register">Register</a>
-        </div>
-        <h2><a href="/users">Home</a></h2>
-        <div>
-            <a href="/users/logout">LogOut</a>
-            <a href="/articles/new">Add Article</a>
-        </div>
-    </div>
-
+    
     <h2 class="title"><%= articles.title%></h2>
     <p class="description"><%= articles.description%></p>
-    <p class="author"><%= articles.author%></p>
+    <p>Author : <%= articles.userId.name%> </p>
     <p class="likes"><%= articles.likes%></p>
-
 
     <div class="likes-div">
       <a href="/articles/<%=articles.id%>/likes">Likes</a>
       <a href="/articles/<%=articles.id%>/dislikes"> Dislikes</a>
     </div>
+
+  <%if(users.id== articles.userId.id){ %>
     <div class="edit">
       <a class="edit-btn" href="/articles/<%=articles.id%>/edit">Edit</a>
       <a class="delete-btn" href="/articles/<%=articles.id%>/delete">Delete</a>
     </div>
+  <%}%>
+   
+ 
+   
+    
+  <form action="/articles/<%=articles.id%>/comment" method="POST">
+    <h2 class="comment">Comment</h2>
+    <div class="comment">
+      <textarea
+        name="content"
+        id=""
+        cols="30"
+        rows="4"
+        placeholder="Comments"
+      ></textarea>
+      <input type="text" name="author" placeholder="Author" />
+      <input type="submit" value="Add" />
+    </div>
+  </form>
 
-    <form action="/articles/<%=articles.id%>/comment" method="POST">
-      <h2 class="comment">Comment</h2>
-      <div class="comment">
-        <textarea
-          name="content"
-          id=""
-          cols="30"
-          rows="4"
-          placeholder="Comments"
-        ></textarea>
-        <input type="text" name="author" placeholder="Author" />
-        <input type="submit" value="Add" />
-      </div>
-    </form>
-
-    <%articles.comment.forEach(elm=>{%>
+  <%articles.comment.forEach(elm=>{%>
     <h2 class="content"><%= elm.content%></h2>
     <p class="author"><%= elm.author%></p>
     <p class="comment-likes"><%= elm.likes %></p>
+   
+
+    <% if(users.id== articles.userId.id){ %>
+      <div class="edit">
+        <a class="edit-btn" href="/comments/<%=elm.id%>/edit">Edit</a>
+        <a class="delete-btn" href="/comments/<%=elm.id%>/delete">Delete</a>
+      </div>
+   <% }%>
+   
     <div class="likes-div">
       <a href="/comments/<%=elm.id%>/likes">Likes</a>
       <a href="/comments/<%=elm.id%>/dislikes"> Dislikes</a>
     </div>
-    <div class="edit">
-      <a class="edit-btn" href="/comments/<%=elm.id%>/edit">Edit</a>
-      <a class="delete-btn" href="/comments/<%=elm.id%>/delete">Delete</a>
-    </div>
-    <%})%>
-  </body>
-</html>
+
+  <%})%>
+
+  
+
+
+
+

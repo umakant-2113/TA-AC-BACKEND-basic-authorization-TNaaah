@@ -9,17 +9,26 @@
     
 </head>
 <body>
-    
-    <header>
-      
-                <h1 class="nav-h1"> <a href="/articles">Home</a></h1>
-                <div class="nav-div">
-                    <a href="/users/login">Login</a>
-                    <a href="/users/register">Register</a>
-                </div>  
-        </nav> 
 
-    </header>
+<% if (users){ %>
+<header class="header">
+    <h1 class="nav-h1"> <a href="/articles">All Articles</a></h1>
+    <div class="nav-div">
+         <a class="login-users"> Login User  : <%= users.name%></a>
+        <a href="/articles/new">Add Articles</a>
+        <a href="/users/logout">LogOut</a>
+    </div>  
+</header>
 
-</body>
-</html>
+ <% } else { %> 
+    <header class="header">   
+        <h1><a href=""> All Articles</a></h1>   
+        <div class="nav-div">
+            <a href="/users/login">Login</a>
+            <a href="/users/register">Register</a>
+            </div>
+</header>
+<% } %>
+
+   
+

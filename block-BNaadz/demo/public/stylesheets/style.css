@@ -181,7 +181,7 @@ margin: 0 auto;
 .nav-h1>a{
   text-decoration: none;
   font-size: 1.9rem;
-  color: white;
+  /* color: white; */
 }
 .nav-div{
   padding-right: 3rem;
@@ -190,7 +190,7 @@ margin: 0 auto;
   padding-left: 1rem;
   font-size: 1.6rem;
   text-decoration: none;
-  color: white;
+  /* color: white; */
 }
 .home-div{
   display: flex;
@@ -198,7 +198,7 @@ margin: 0 auto;
   width: 100%;
   align-items: center;
   background-color: teal;
-  color: white;
+  /* color: white; */
   padding: .6rem 0;
 }
 .home-div>div>a{
@@ -212,4 +212,19 @@ margin: 0 auto;
   text-align: center;
   font-size: 2rem;
   text-transform: capitalize;
+}
+.header{
+  display: flex;
+  border: 2px solid red;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+}
+.creat-author{
+  font-size: 1.5rem;
+  color: red;
+}
+.login-users{
+  font-size: 1.5rem;
+  color: turquoise;
 }

@@ -5,7 +5,8 @@ let commentSchema=new Schema({
     content:{type:String,required:true},
     author:String,
     likes :{type:Number,default:0},
-    articleId:{type:Schema.Types.ObjectId,ref:"Article"}
+    articleId:{type:Schema.Types.ObjectId,ref:"Article"},
+    authorId:{type:Schema.Types.ObjectId , ref: "User"}
 })
 
 

@@ -28,8 +28,9 @@ router.post("/:id/edit",(req,res,next)=>{
 // delete comments
 router.get("/:id/delete",(req,res,next)=>{
     let id=req.params.id;
+    console.log(id)
+
     Comment.findByIdAndDelete(id,(err,comments)=>{
-      
         if(err) return next(err);
         res.redirect("/articles/"+comments.articleId)   
     })
