@@ -1,0 +1,9 @@
+<%include partails/header%>
+
+   
+    <h2>Article List</h2>
+    <%articles.forEach(elm=>{%>
+       <h2><a href="/articles/<%=elm.id%>"> <%=elm.title%>  </a></h2> 
+    <%})%>
+</body>
+</html>
