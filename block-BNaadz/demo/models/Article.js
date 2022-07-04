@@ -6,7 +6,8 @@ let artilceSchema=new Schema({
     description:String,
     likes:{type:Number,default:0},
     comment : [{type:Schema.Types.ObjectId, ref:"Comment"}],
-    author:String
+    userId: {type:Schema.Types.ObjectId, ref: "User"},
+    tags:[String]
 })
 
 module.exports=mongoose.model("Article",artilceSchema);
