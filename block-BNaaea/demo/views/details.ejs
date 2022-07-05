@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="big-div">
+    <div class="details-div">
+        <h2> Product Name :<%= product.name%></h2>
+        <p>Product Quantity :  <%=product.quantity %></p>
+        <p>Product Category : <%= product.category%></p>
+        <p> Product Price : <%= product.price%></p>
+        <img class="full-width" src="/images/<%=product.productImage %>" alt="">
+        <div class="cart">
+            <a href="/products/<%=product.id%>/cart">Cart</a>
+            <a href="">Buy Now</a>
+        </div>
+        
+    </div>
+</div>
+</body>
+</html>

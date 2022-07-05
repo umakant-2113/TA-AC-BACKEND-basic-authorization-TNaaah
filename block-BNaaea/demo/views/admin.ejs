@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <h1 class="admin">Admin Page</h1>
+      <div class="all">
+        <div class="flex-30">
+          <h2>ALL Users</h2>
+          <%users.forEach(elm=>{ %>
+          <h2><%= elm.name%></h2>
+          <%})%>
+        </div>
+
+        <div class="flex-30">
+          <h2 class="all-product">All Product</h2>
+          <%products.forEach(elm=>{ %>
+            <div class="product">
+              <img class="width" src="/images/<%=elm.productImage%>" alt="">
+              <h2> name: <%= elm.name %> </h2>
+              <p>Price : ₹<%= elm.price%></p>
+              <p> Category : <%= elm.category%></p>
+              <a href="/products/<%=elm.id%>/details"> More About</a>
+            </div>
+          <%})%>
+        </div>
+        <div class="flex-30">
+          <h2>All Category</h2>
+          <form action="/products/admin">
+          <select name="product" id="">
+          <%category.forEach(elm=>{%>
+              <option value="<%= elm%>"> <%= elm%></option>
+          <%})%>
+          <input type="submit" value="Add">
+        </select>
+      </form>
+        </div>
+      </div>
+    </header>
+  </body>
+</html>
