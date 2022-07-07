@@ -1,21 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/stylesheets/style.css">
-    <title>Document</title>
-</head>
+<%include partails/hreader%>
 <body>
     <div class="big-div">
     <div class="details-div">
-        <h2> Product Name :<%= product.name%></h2>
-        <p>Product Quantity :  <%=product.quantity %></p>
-        <p>Product Category : <%= product.category%></p>
-        <p> Product Price : <%= product.price%></p>
+        <h1 class="details-h1">Product  Detail  </h1>
         <img class="full-width" src="/images/<%=product.productImage %>" alt="">
+        <h2  class="product-name"> Product Name :<%= product.name%></h2>
+        <p class="product-p">Product Quantity :  <%=product.quantity %></p>
+        <p class="product-p">Product Category : <%= product.category%></p>
+        <p class="product-p"> Product Price : ₹<%= product.price%></p>
+        <p class="product-p"> likes :<%= product.like%> </p>
+        <div class="product-likes">
+            <a href="/products/<%=product.id%>/likes">Likes</a>
+            <a href="/products/<%=product.id%>/dislikes">Dislikes</a>
+        </div>
+
+        
+        
         <div class="cart">
+            <a href="/products/<%=product.id%>/edit">Edit</a>
+            <a href="/products/<%=product.id%>/delete">Delete</a>
             <a href="/products/<%=product.id%>/cart">Cart</a>
             <a href="">Buy Now</a>
         </div>
