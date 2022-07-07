@@ -1,0 +1,9 @@
+<%include partails/hreader%>
+<body>
+    <h2>Product List Page</h2>
+
+    <%products.forEach(product=>{ %>
+<h2> <a href="/products/<%=product.id%>/details"> <%= product.name%>  </a>  </h2>
+    <%})%>
+</body>
+</html>
