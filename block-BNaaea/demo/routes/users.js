@@ -8,12 +8,25 @@ router.get("/register", (req,res,next)=>{
 res.render("registerform")
 })
 
+// capture register form data
+
 router.post("/register",(req,res,next)=>{
-User.create(req.body,(err,users)=>{
-  if(err) return next(err);
-  console.log(users)
-  res.redirect("/users/login")
-})
+  if(req.body.admin=="on"){
+    req.body.admin=true;
+    User.create(req.body,(err,users)=>{
+      if(err) return next(err);
+      console.log(user,"true")
+      res.redirect("/users/login")
+    })
+  }else{
+    req.body.admin=false
+    User.create(req.body,(err,user)=>{
+      if(err) return next(err);
+      console.log(user, "false")
+      res.redirect("/users/login")
+    })
+  }
+
 });
 
 // login form 
@@ -28,55 +41,25 @@ router.post("/login",(req,res,next)=>{
 let {email,password}=req.body;
 // email and password fill login form
 if(!email && !password){
-  return  res.redirect("/users/login");
+  return res.redirect("/users/login")
 }
-else if(email==="lodhiumakant800@gmail.com"){
-  // find user data from data base 
-  User.findOne({email},(err,user)=>{
-    if(err) return  next(err);
-    if(!user){
-      return  res.redirect("/users/login");
-    }
-    // verify password from data base
-user.verifyPassword(password,(err,result)=>{
-  if(err) return  next(err);
-
-  if(!result){
-    return  res.redirect("/users/login");
+User.findOne({email},(err,user)=>{
+  if(err) return next(err);
+  if(!user){
+    return res.redirect("/users/login")
   }
-  req.session.userId = user._id
-  return res.redirect('/users/admin')
-
-})
-
-  })
-}
-else{
-  User.findOne({email} ,(err,user)=>{
+  user.verifyPassword(password,(err,result)=>{
     if(err) return next(err);
-    if(!user){
-      return  res.redirect("/users/login");
-    }
-    Block.find({},(err,data)=>{
-      if(err) return next(err);
-data.forEach(elm=>{
-  if(elm[0].equals(user.id)){
-    return res.redirect('/users/login')
-  }else{
-    user.varifyPassword(password,(err,result)=>{
-      if (err) return next(err)
-      if(!result){
-        return res.redirect('/users/login') 
-      }
-      req.session.userId = user._id
-      return res.redirect('/users')
-    })
-  }
-})
-    })
+    if(!result){
+      return res.redirect("/users/login")
+    } 
+    req.session.userId=user.id;
+    res.redirect("/products")
   })
-}
 })
+
+})
+
 
 // logout page
 

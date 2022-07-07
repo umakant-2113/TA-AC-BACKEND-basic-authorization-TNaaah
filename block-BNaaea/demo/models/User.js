@@ -6,7 +6,9 @@ let Schema=mongoose.Schema;
 let userSchema=new Schema({
     name:{type :String,required:true},
     email:{type : String, unique:true},
-    password:{type : String , minlength:5}
+    password:{type : String , minlength:5},
+    admin:{type: Boolean , default:false},
+    block:{type:Boolean,default:false}
 })
 
 userSchema.pre("save",function(next){

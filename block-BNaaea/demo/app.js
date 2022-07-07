@@ -6,7 +6,7 @@ var logger = require('morgan');
 let mongoose=require("mongoose");
 let session=require("express-session");
 let MongoStote=require("connect-mongo");
-
+let auth=require("./middleware/auth")
 
 // connect mongoose
 mongoose.connect("mongodb://127.0.0.1/E-Comers",(err)=>{
@@ -14,6 +14,7 @@ console.log(err ? err : "mongoose connected")
 })
 
 // router
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -35,6 +36,7 @@ app.use(session({
   store: new MongoStote({mongoUrl: "mongodb://127.0.0.1/E-Comers"})
 }))
 
+// app.use(auth.userInfo)
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/products",require("./routes/product"))
