@@ -1,117 +1,171 @@
-var express = require('express');
-var router = express.Router();
-var auth = require('../middlewares/auth')
+let express = require('express');
+let router = express.Router();
 
-var Podcast = require('../models/Podcast')
-var fs = require('fs')
-var multer = require('multer')
+let User = require('../modles/User');
+let Podcast = require('../modles/Podcast');
+let multer = require('multer');
+let path = require('path');
+let uploadPath = path.join(__dirname, '../', 'public/images/');
+let fs = require('fs');
+let auth= require("../middleware/auth")
+// console.log(uploadPath)
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadPath);
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 
-let storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './public/podcast')
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname)
-    }
-})
 
-let upload = multer({ storage: storage })
 
-//authorization
-router.use(auth.loggedInUser)
+// create podcast
 
-//add podcast
-router.get('/new', (req, res) => {
-    res.render('podcast')
-})
+router.use(auth.loggedInUse)
 
-//capture the data
-router.post('/new', upload.fields([{ name: 'audio', maxCount: 1 }, { name: 'cover_image', maxCount: 1 }]), (req, res, next) => {
-    let { audio, cover_image } = req.files
-    req.body.audio = audio[0].filename
-    req.body.cover_image = cover_image[0].filename
+router.get('/new', (req, res, next) => {
+    res.render('podcast');
+});
+
+// capture data from podcast
+
+router.post(
+  '/new',
+  upload.fields([
+    { name: 'podcastImage', maxCount: 1 },
+    { name: 'audio', maxCount: 1 },
+  ]),
+  (req, res, next) => {
+    console.log(req.body);
+    req.body.podcastImage = req.files.podcastImage[0].filename;
+    req.body.audio = req.files.audio[0].filename;
     Podcast.create(req.body, (err, podcast) => {
-        if (err) return next(err)
-        res.redirect('/users')
-    })
-})
+      if (err) return next(err);
+      res.redirect('/users');
+    });
+  }
+);
 
-//edit the podcast
+
+
+// podcast list
+router.get('/', (req, res, next) => {
+  Podcast.find({}, (err, podcasts) => {
+    if (err) return next(err);
+    console.log(podcasts)
+    res.render('podcast-list', { podcasts });
+  });
+});
+
+// details podcast
+
+router.get('/:id', (req, res, next) => {
+  let id = req.params.id;
+  Podcast.findById(id, (err, podcast) => {
+    if (err) return next(err);
+    res.render('details', { podcast });
+  });
+});
+// edit podcast
+
 router.get('/:id/edit', (req, res, next) => {
-    let id = req.params.id
-    Podcast.findById(id, (err, podcast) => {
-        if (err) return next(err)
-        console.log(podcast)
-        res.render('podcastEdit', { podcast })
-    })
-})
-
-//capture the data
-router.post('/:id/edit', upload.fields([{ name: 'audio', maxCount: 1 }, { name: 'cover_image', maxCount: 1 }]), (req, res, next) => {
-    let id = req.params.id
-    let newAudio = ''
-    let newImage = ''
-
-    if (req.files) {
-        let audio = req.files.audio[0]
-        let cover_image = req.files.cover_image[0]
-
-        if (audio) {
-            newAudio = audio.filename
-            try {
-                fs.unlinkSync('./public/podcast/' + req.body.audio)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        if (cover_image) {
-            newImage = cover_image.filename
-            try {
-                fs.unlinkSync('./public/podcast/' + req.body.cover_image)
-            } catch (error) {
-
-            }
-        }
-
+  let id = req.params.id;
+  let userId = req.user.id;
+  User.findById(userId, (err, user) => {
+    if (user.isAdmin == true) {
+      Podcast.findById(id, (err, podcast) => {
+        if (err) return next(err);
+        res.render('update-podcast', { podcast });
+      });
+    } else {
+      res.redirect('/podcasts/' + id);
     }
-    else {
-        newAudio = req.body.audio
-        newImage = req.body.cover_image
+  });
+});
+
+//
+
+router.post('/:id/edit'  ,upload.fields([{ name: 'podcastImage', maxCount: 1 }, { name: 'audio', maxCount: 1 }]), (req, res, next) => {
+  let id = req.params.id;
+  let newAudio = '';
+  let newImage = '';
+  if (req.files) {
+    let audio = req.files.audio
+    let podcastImage = req.files.podcastImage
+
+    if (audio) {
+      newAudio = audio[0].filename;
+      try {
+        fs.unlinkSync(uploadPath + req.body.audio);
+      } catch (err) {
+        console.log(err);
+      }
     }
 
-    req.body.audio = newAudio
-    req.body.cover_image = newImage
-    Podcast.findByIdAndUpdate(id, req.body, (err, podcast) => {
-        if (err) return next(err)
-        console.log(podcast)
-        res.redirect('/users')
-    })
+    if (podcastImage) {
+      newImage = podcastImage[0].filename;
+    }
+    try {
+      fs.unlinkSync(uploadPath + req.body.podcastImage);
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    newAudio = req.body.audio;
+    newImage = req.body.podcastImage;
+  }
+  
+  req.body.audio = newAudio;
+  req.body.podcastImage = newImage;
 
-})
+  Podcast.findByIdAndUpdate(id, req.body, (err, podcast) => {
+    if (err) return next(err);
+    res.redirect('/podcasts');
+  });
+});
 
-//delete the podcast
+// delete image and audio
 router.get('/:id/delete', (req, res, next) => {
-    let id = req.params.id
-    Podcast.findByIdAndDelete(id, (err, podcast) => {
-        if (err) return next(err)
-        if (podcast.audio) {
-            try {
-                fs.unlinkSync('./public/podcast/' + podcast.audio)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        if (podcast.cover_image) {
-            try {
-                fs.unlinkSync('./public/podcast/' + podcast.cover_image)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        res.redirect('/users')
-    })
+  let userid=req.user.id;
+  let id = req.params.id
+
+  User.findById(userid,(err,user)=>{
+    
+if(user.isAdmin==true){
+
+  Podcast.findByIdAndDelete(id, (err, podcast) => {
+      if (err) return next(err)
+      if (podcast.audio) {
+          try {
+              fs.unlinkSync(uploadPath + podcast.audio)
+          } catch (error) {
+              console.log(error)
+          }
+      }
+      if (podcast.cover_image) {
+          try {
+              fs.unlinkSync(uploadPath + podcast.podcastImage)
+          } catch (error) {
+              console.log(error)
+          }
+      }
+      res.redirect('/podcasts')
+  })
+
+}else{
+  res.redirect("/podcasts/"+id)
+}
+
+  })
 })
 
-module.exports = router
+
+
+
+
+module.exports = router;

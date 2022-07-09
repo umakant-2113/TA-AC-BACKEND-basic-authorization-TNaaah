@@ -1,0 +1,21 @@
+<% include partails/header  %>
+
+<body class="podcast-list-body">
+    <h1 class="podcast-list-all">All  PodCast List </h1>
+   
+<div class="main-div">
+    <%podcasts.forEach(elm=>{%>
+        <div class="podcast-list flex-30">
+            <figure>
+                <img  class="width"  src="/images/<%=elm.podcastImage%>" alt="">
+                <audio controls>
+                    <source src="/images/<%=elm.audio%>" type="audio/mpeg">
+                </audio>
+            </figure>    
+<h2> <a href="/podcasts/<%=elm.id%>"><%= elm.songName%>  </a></h2>
+</div>
+    <%})%>
+</div>
+
+</body>
+</html>

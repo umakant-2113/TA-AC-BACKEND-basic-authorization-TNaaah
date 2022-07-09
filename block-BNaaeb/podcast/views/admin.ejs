@@ -1,31 +1,34 @@
-<%include partial/header%>
-    <h2 class="dashboard">Admin Dashboard</h2>
-    <a href="/podcast/new" class="update-btn">Upload Podcast</a> <br>
-    
-    <% if(podcasts) { %>
-    <% podcasts.forEach((podcast)=>{ %>
-        <article>
-            <div class="parent-div">
-            <img src="/podcast/<%=podcast.cover_image%>" alt="<%=podcast.cover_image%>" class="img">
-            <div class="child">
-                <h2>
-                    <%=podcast.description%>
-                </h2>
-                <cite>
-                 <%= podcast.author%>
-                </cite> <br>
-            <audio controls>
-                <source src="/podcast/<%=podcast.audio%>" type="audio/mpeg">
-            </audio> 
-<div class="buttons">
-    <a href="/podcast/<%=podcast._id%>/edit">Edit</a>
-    <a href="/podcast/<%=podcast._id%>/delete">Delete</a>
-</div>
-         
-        </div>
+<% include partails/header%>
+<body class="admin-body">
+<form action="/users/updateCategory" method="POST"  >
+    <div class="category-select">
+        <select name="category"  >
+            <option >Free</option>
+            <option >Premium </option>
+            <option >VIP</option>
+        </select>
+    <input type="submit" value="Add">
     </div>
-    </article> 
-        <% }) %>
-  <%  } else { %>
-<p>No Podcaste ☹</p>
-   <% } %>
+   
+
+</form>
+    <div class="admin-div">
+    <% podcasts.forEach(podcast=>{ %>
+<div class="flex-30">
+    <figure>
+        <img src="/images/<%=podcast.podcastImage %>" alt="">
+    </figure>
+    <figure>
+        <audio controls>
+            <source src="/images/<%=podcast.audio%>" type="audio/mpeg">
+        </audio>
+    </figure>
+    <h2> <%= podcast.songName%> </h2>
+    <p class="para"> <strong class="strong"> Singer</strong>  <%= podcast.singer%>  </p>
+    <p class="para"><%=podcast.discription %>  </p>
+    <p class="para"> <strong class="strong" >Subscriptions :</strong>  <%= podcast.category%></p>
+</div>
+   <% }) %>
+</div>
+</body>
+</html>
