@@ -1,0 +1,23 @@
+<%include  partails/header %>
+<body class="details-body">
+    <h2 class="details-heading">About Of Our PodCast </h2>
+ <div class="details-div">
+    <figure>
+        <img class="full-width" src="/images/<%=podcast.podcastImage %>" alt="">
+    </figure>
+<figure>
+    <audio controls>
+        <source src="/images/<%=podcast.audio%>" type="audio/mpeg">
+    </audio>
+</figure>
+<h2> SONG NAME   :<%=podcast.songName %> </h2>
+<p> SINGER NAME <%=podcast.singer %></p>
+<p> ABOUT OF SONGS <%=podcast.discription %></p>
+<p> CATEGORY <%= podcast.category%></p>
+<div class="edit-div">
+    <a href="/podcasts/<%=podcast._id%>/edit">Edit</a>
+    <a href="/podcasts/<%=podcast._id%>/delete">Delete</a>
+</div>
+</div>
+</body>
+</html>
