@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <title>Document</title>
+  </head>
+  <body class="edit-body">
+    <form action="/podcasts/<%=podcast.id %>/edit" method="POST" enctype="multipart/form-data">
+      <div class="form-div">
+        <label for="" class="label">Image</label>
+        <input type="file" name="podcastImage"  placeholder="Image"
+        value="<%=podcast.podcastImage%>"/>
+
+        <label for="" class="label"> Audio </label>
+        <input type="file" name="audio" value="<%=podcast.audio %>"
+        placeholder="Audio">
+
+        <input
+          type="text"
+          name="songName"
+          value="<%=podcast.songName%>"
+          placeholder="songname"
+        />
+
+        <input
+          type="text"
+          name="singer"
+          value="<%=podcast.singer%>"
+          placeholder="Singer"
+        />
+
+        <textarea
+          name="discription"
+          id=""
+          cols="30"
+          rows="10"
+          placeholder="Description"
+        >
+            <%=podcast.discription%>
+        </textarea
+        >
+        <select name="category" id="">
+            <option value="<%=podcast.category%>" name="category">Free</option>
+          <option value="<%=podcast.category%>" name="category">VIP</option>
+          <option value="<%=podcast.category%>" name="category">premium</option>
+        </select>
+        <input type="submit" value="Add" />
+      </div>
+    </form>
+  </body>
+</html>

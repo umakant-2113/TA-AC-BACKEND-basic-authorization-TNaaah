@@ -1,0 +1,34 @@
+<% include partails/header%>
+<body class="admin-body">
+<form action="/users/updateCategory" method="POST"  >
+    <div class="category-select">
+        <select name="category"  >
+            <option >Free</option>
+            <option >Premium </option>
+            <option >VIP</option>
+        </select>
+    <input type="submit" value="Add">
+    </div>
+   
+
+</form>
+    <div class="admin-div">
+    <% podcasts.forEach(podcast=>{ %>
+<div class="flex-30">
+    <figure>
+        <img class="full-width" src="/images/<%=podcast.podcastImage %>" alt="">
+    </figure>
+    <figure>
+        <audio controls>
+            <source src="/images/<%=podcast.audio%>" type="audio/mpeg">
+        </audio>
+    </figure>
+    <h2> <%= podcast.songName%> </h2>
+    <p class="para"> <strong class="strong"> Singer</strong>  <%= podcast.singer%>  </p>
+    <p class="para"><%=podcast.discription %>  </p>
+    <p class="para"> <strong class="strong" >Subscriptions :</strong>  <%= podcast.category%></p>
+</div>
+   <% }) %>
+</div>
+</body>
+</html>
